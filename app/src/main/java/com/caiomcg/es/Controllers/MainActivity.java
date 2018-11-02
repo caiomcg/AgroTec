@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
+import com.caiomcg.es.RegionsNavigation;
 import com.caiomcg.es.UserFactory;
 import com.caiomcg.es.Utils.Requests;
 
@@ -56,7 +57,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         user = UserFactory.createUser(response);
                         Log.d(TAG, "Logged " + user.firstName + " to the system");
-                        // Todo: transition to logged user screen
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("User", user);
+
+                        Log.e(TAG, user.toString());
+
+                        Intent intent = new Intent(MainActivity.this, RegionsNavigation.class);
+                        intent.putExtras(bundle);
+
+                        startActivity(intent);
                     } catch (JSONException e) {
                         Toast.makeText(MainActivity.this, "Não foi possível conectar" +
                                 ", por favor contate um administrador", Toast.LENGTH_LONG).show();

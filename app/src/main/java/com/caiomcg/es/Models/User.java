@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     public int id;
     public String userName;
     public String firstName;
@@ -44,6 +46,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "Name: " + userName + " id: " + id;
+        return "Name: " + userName + " " + lastName + " id: " + id + " email: " + email;
     }
 }
