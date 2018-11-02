@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.caiomcg.es">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".Controllers.AgroTecApplication"
@@ -19,8 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Controllers.NoAccountActivity">
-        </activity>
+        <activity android:name=".Controllers.NoAccountActivity"></activity>
+        <activity
+            android:name=".RegionsNavigation"
+            android:label="@string/title_activity_regions_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
