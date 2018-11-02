@@ -15,7 +15,7 @@ public class User {
     public String phone;
 
 
-    JSONObject toJsonObject() throws JSONException {
+    public JSONObject toJsonObject() throws JSONException {
         JSONObject object = new JSONObject();
 
         object.put("id", id);
@@ -24,15 +24,17 @@ public class User {
         object.put("lastName", lastName);
         object.put("email", email);
         object.put("password", password);
-        
+
         if (ads != null) {
             JSONArray arrayOfAds = new JSONArray();
             for (int i = 0; i < ads.length; i++) {
                 arrayOfAds.put(ads[i]);
             }
-            object.put("ads", arrayOfAds);
+            object.put("anuncios", arrayOfAds);
         } else {
-            object.put("ads", new JSONArray());
+            JSONArray arrayOfAds = new JSONArray();
+            arrayOfAds.put(0);
+            object.put("anuncios", arrayOfAds);
         }
 
         object.put("phone", phone);
