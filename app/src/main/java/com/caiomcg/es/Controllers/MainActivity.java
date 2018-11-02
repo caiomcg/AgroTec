@@ -20,10 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
-import com.caiomcg.es.RegionsNavigation;
 import com.caiomcg.es.UserFactory;
 import com.caiomcg.es.Utils.Requests;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
