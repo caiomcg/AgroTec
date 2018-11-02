@@ -20,11 +20,11 @@ public class User {
 
         object.put("id", id);
         object.put("userName", userName);
+        object.put("firstName", firstName);
         object.put("lastName", lastName);
         object.put("email", email);
         object.put("password", password);
-        object.put("id", id);
-
+        
         if (ads != null) {
             JSONArray arrayOfAds = new JSONArray();
             for (int i = 0; i < ads.length; i++) {

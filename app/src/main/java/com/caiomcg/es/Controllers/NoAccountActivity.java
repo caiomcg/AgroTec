@@ -5,17 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.caiomcg.es.C;
 import com.caiomcg.es.R;
+import com.caiomcg.es.UserFactory;
+import com.caiomcg.es.Utils.Requests;
+
+import org.json.JSONException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NoAccountActivity extends AppCompatActivity {
+public class NoAccountActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int FETCH_IMAGE = 1;
+    public static final String TAG = "NoAccountActivity";
 
     private EditText firstName;
     private EditText lastName;
@@ -37,21 +45,29 @@ public class NoAccountActivity extends AppCompatActivity {
         repassword = findViewById(R.id.no_acc_repassword_edit_text);
 
 
-        findViewById(R.id.profile_image).setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(Intent.createChooser(intent, "Selecione a imagem de perfil"), FETCH_IMAGE);
-        });
+        findViewById(R.id.profile_image).setOnClickListener(this);
+        findViewById(R.id.create_user_button).setOnClickListener(this);
+    }
 
-        findViewById(R.id.create_user_button).setOnClickListener(v -> {
-            if (!password.getText().toString().equals(repassword.getText().toString())) {
-                new AlertDialog.Builder(NoAccountActivity.this)
-                        .setTitle("Cadastro inválido")
-                        .setMessage("As senhas informadas não coincidem")
-                        .setPositiveButton("Ok", null)
-                        .create()
-                        .show();
-            } else {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FETCH_IMAGE && data != null) {
+            ((CircleImageView)findViewById(R.id.profile_image)).setImageURI(data.getData());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.profile_image:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(Intent.createChooser(intent, "Selecione a imagem de perfil"), FETCH_IMAGE);
+                break;
+
+            case R.id.create_user_button:
                 if (firstName.getText().toString().isEmpty() ||
                         lastName.getText().toString().isEmpty() ||
                         userName.getText().toString().isEmpty() ||
@@ -65,20 +81,10 @@ public class NoAccountActivity extends AppCompatActivity {
                             .create()
                             .show();
                 } else {
-                    // send to server
-
+                    //Todo: send to server
+                    Log.d(TAG, "Sending to server");
                 }
-            }
-
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == FETCH_IMAGE && data != null) {
-            ((CircleImageView)findViewById(R.id.profile_image)).setImageURI(data.getData());
+                break;
         }
     }
 }
