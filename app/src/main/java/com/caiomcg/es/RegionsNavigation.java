@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.caiomcg.es.Models.User;
 
 public class RegionsNavigation extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener, PostFragment.OnFragmentInteractionListener  {
     public static String TAG = "RegionsNavigation";
 
     private User user;
@@ -101,8 +101,8 @@ public class RegionsNavigation extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_mata:
                 //TODO: Show type
-                OptionsFragment fragment = OptionsFragment.newInstance("", "");
-                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, fragment).commit();
+                OptionsFragment optionsFragment = OptionsFragment.newInstance("", "");
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, optionsFragment).commit();
                 break;
             case R.id.nav_agreste:
                 break;
@@ -111,6 +111,8 @@ public class RegionsNavigation extends AppCompatActivity
             case R.id.nav_sertao:
                 break;
             case R.id.nav_share:
+                PostFragment postFragment = PostFragment.newInstance("", "");
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, postFragment).commit();
                 break;
             case R.id.nav_send:
                 break;
