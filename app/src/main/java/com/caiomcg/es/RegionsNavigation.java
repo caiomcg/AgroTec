@@ -1,9 +1,10 @@
 package com.caiomcg.es;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 import com.caiomcg.es.Models.User;
 
 public class RegionsNavigation extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener  {
     public static String TAG = "RegionsNavigation";
 
     private User user;
@@ -97,24 +98,32 @@ public class RegionsNavigation extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_mata) {
-            // Handle the camera action
-        } else if (id == R.id.nav_agreste) {
-
-        } else if (id == R.id.nav_borborema) {
-
-        } else if (id == R.id.nav_sertao) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        switch (item.getItemId()) {
+            case R.id.nav_mata:
+                //TODO: Show type
+                OptionsFragment fragment = OptionsFragment.newInstance("", "");
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, fragment).commit();
+                break;
+            case R.id.nav_agreste:
+                break;
+            case R.id.nav_borborema:
+                break;
+            case R.id.nav_sertao:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Log.e(TAG, uri.toString());
     }
 }
