@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.caiomcg.es.HomeFragment;
 import com.caiomcg.es.Models.User;
 
 import com.caiomcg.es.OptionsFragment;
@@ -24,7 +24,8 @@ import com.caiomcg.es.PostFragment;
 import com.caiomcg.es.R;
 
 public class RegionsNavigation extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener, PostFragment.OnFragmentInteractionListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener,
+        PostFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener  {
     public static String TAG = "RegionsNavigation";
 
     private User user;
@@ -53,6 +54,9 @@ public class RegionsNavigation extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        HomeFragment homeFragment = HomeFragment.newInstance("", "");
+        getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, homeFragment).commit();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -103,8 +107,11 @@ public class RegionsNavigation extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
+            case R.id.nav_home:
+                HomeFragment homeFragment = HomeFragment.newInstance("", "");
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, homeFragment).commit();
+                break;
             case R.id.nav_mata:
-                //TODO: Show type
                 OptionsFragment optionsFragment = OptionsFragment.newInstance("", "");
                 getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, optionsFragment).commit();
                 break;
