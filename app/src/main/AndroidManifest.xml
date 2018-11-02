@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".Controllers.NoAccountActivity"></activity>
         <activity
-            android:name=".RegionsNavigation"
+            android:name=".Controllers.RegionsNavigation"
             android:label="@string/title_activity_regions_navigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
