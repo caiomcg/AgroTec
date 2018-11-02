@@ -21,12 +21,13 @@ import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
 import com.caiomcg.es.UserFactory;
+import com.caiomcg.es.Utils.Requests;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = "MainAct";
     private User user;
     private EditText userName;
@@ -40,30 +41,38 @@ public class MainActivity extends AppCompatActivity {
         userName = findViewById(R.id.username_edit_text);
         password = findViewById(R.id.password_edit_text);
 
-        findViewById(R.id.connect_button).setOnClickListener(v -> {
-            RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-            queue.add(new JsonObjectRequest(Request.Method.GET, C.userLogin(userName.getText().toString(),
-                    password.getText().toString()).toString(),
-                    null, response -> {
-                try {
-                    user = UserFactory.createUser(response);
-                    Log.d(TAG, "Logged " + user.firstName + " to the system");
-                    // transition to logged user screen
-                } catch (JSONException e) {
-                    Toast.makeText(MainActivity.this, "Não foi possível conectar" +
-                            ", por favor contate um administrador", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-            }, error -> {
-                Toast.makeText(MainActivity.this, "Não foi possível contactar o" +
-                        "servidor, por favor verifique as credenciais", Toast.LENGTH_LONG).show();
-                Log.e(TAG, error.toString());
-            }));
-        });
+        findViewById(R.id.connect_button).setOnClickListener(this);
+        findViewById(R.id.no_account_text_view).setOnClickListener(this);
+    }
 
-        findViewById(R.id.no_account_text_view).setOnClickListener(v -> {
-            //TODO: Show user creation
-            startActivity(new Intent(MainActivity.this, NoAccountActivity.class));
-        });
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.connect_button:
+                Requests.getInstance().asJsonObject(Request.Method.GET, C.userLogin(userName.getText().toString(),
+                        password.getText().toString()).toString(),null,
+                response -> {
+                    try {
+                        user = UserFactory.createUser(response);
+                        Log.d(TAG, "Logged " + user.firstName + " to the system");
+                        // Todo: transition to logged user screen
+                    } catch (JSONException e) {
+                        Toast.makeText(MainActivity.this, "Não foi possível conectar" +
+                                ", por favor contate um administrador", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    Toast.makeText(MainActivity.this, "Não foi possível contactar o" +
+                            "servidor, por favor verifique as credenciais", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, error.toString());
+                });
+                break;
+
+            case R.id.no_account_text_view:
+                startActivity(new Intent(MainActivity.this, NoAccountActivity.class));
+                break;
+        }
     }
 }
