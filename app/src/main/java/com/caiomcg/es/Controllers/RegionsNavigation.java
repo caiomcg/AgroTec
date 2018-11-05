@@ -17,15 +17,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.caiomcg.es.HomeFragment;
+import com.caiomcg.es.MataFragment;
 import com.caiomcg.es.Models.User;
 
 import com.caiomcg.es.OptionsFragment;
 import com.caiomcg.es.PostFragment;
 import com.caiomcg.es.R;
+import com.caiomcg.es.dummy.DummyContent;
 
 public class RegionsNavigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener,
-        PostFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener  {
+        PostFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
+        MataFragment.OnListFragmentInteractionListener {
     public static String TAG = "RegionsNavigation";
 
     private User user;
@@ -112,8 +115,8 @@ public class RegionsNavigation extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, homeFragment).commit();
                 break;
             case R.id.nav_mata:
-                OptionsFragment optionsFragment = OptionsFragment.newInstance("", "");
-                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, optionsFragment).commit();
+                MataFragment mataFragment = MataFragment.newInstance(0);
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, mataFragment).commit();
                 break;
             case R.id.nav_agreste:
                 break;
@@ -139,4 +142,10 @@ public class RegionsNavigation extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
         Log.e(TAG, uri.toString());
     }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
+    }
 }
+
