@@ -30,7 +30,7 @@
                 android:layout_height="200dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/placeholder"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp" />
 
