@@ -16,10 +16,13 @@ import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
 import com.caiomcg.es.Utils.Requests;
+import com.caiomcg.es.Utils.UserFactory;
 import com.caiomcg.es.Utils.Validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.nio.Buffer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -87,7 +90,8 @@ public class NoAccountActivity extends AppCompatActivity implements View.OnClick
                     user.userName = userName.getText().toString();
                     user.email = email.getText().toString();
                     user.password = password.getText().toString();
-                    user.phone = "Adicionamos?"; // TODO: DECIDE
+                    user.phone = "8888-8888";
+                    user.urlImage = "";
                     JSONObject jsonObject = null;
 
                     try {
@@ -100,6 +104,20 @@ public class NoAccountActivity extends AppCompatActivity implements View.OnClick
                     Requests.getInstance().asJsonObject(Request.Method.POST, C.userURI().toString(),
                             jsonObject, response -> {
                                 Log.e(TAG, "All good");
+                                try {
+                                    User loggedUser = UserFactory.createUser(response);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("User", loggedUser);
+
+                                    Intent toRegions = new Intent(NoAccountActivity.this, RegionsNavigation.class);
+                                    toRegions.putExtras(bundle);
+
+                                    startActivity(toRegions);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }, error -> {
                                 Log.e(TAG, "An error occured: " + error.toString());
                                 error.printStackTrace();

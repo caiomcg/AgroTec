@@ -6,7 +6,7 @@ import java.net.URI;
 
 public class C {
     //public static final String BASE_URL = "https://virtserver.swaggerhub.com/caiomcg4/AgroTec/1.0.0";
-    public static final String BASE_URL = "http://192.168.25.80:8080";
+    public static final String BASE_URL = "http://150.165.138.181:8080";
 
     public static Uri userURI() {
         return Uri.parse(BASE_URL + "/api/people/");

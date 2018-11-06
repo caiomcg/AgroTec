@@ -19,6 +19,7 @@ import com.caiomcg.es.Models.Ad;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
 import com.caiomcg.es.Utils.Requests;
+import com.caiomcg.es.Utils.Share;
 import com.caiomcg.es.Utils.UserFactory;
 import com.caiomcg.es.dummy.DummyContent.DummyItem;
 import com.squareup.picasso.Picasso;
@@ -55,43 +56,23 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (!mValues.get(position).urlImage.isEmpty() && !mValues.get(position).urlImage.equals("null")) {
+            Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).urlImage).into(holder.mPostImage);
+        }
         holder.mTitle.setText(mValues.get(position).title);
         holder.mDescription.setText(mValues.get(position).description);
 
+        holder.mUserName.setText(mValues.get(position).user.userName);
+        if (!mValues.get(position).user.urlImage.isEmpty()) {
+            Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).user.urlImage).into(holder.mUserImageProfile);
+        }
         holder.mUserDate.setText(mValues.get(position).registerDate);
 
-        Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).urlImage).into(holder.mPostImage);
-
-        holder.mUserName.setText(mValues.get(position).user.userName);
-        Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).user.urlImage).into(holder.mUserImageProfile);
-
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-//                    mListener.onListFragmentInteraction(holder.mItem);
-//                }
-            }
+        holder.mView.setOnClickListener(v -> {
+            AgroTecApplication.getContext().startActivity(Share.sendText(String.format("%s\n%s\n\n%s",
+                    holder.mTitle.getText().toString(),holder.mDescription.getText().toString(),
+                    holder.mUserName.getText().toString())));
         });
-    }
-
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting bitmap", e);
-        }
-        return bm;
     }
 
     @Override
@@ -99,16 +80,16 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mTitle;
-        public final TextView mDescription;
-        public final TextView mUserName;
-        public final TextView mUserDate;
-        public final ImageView mUserImageProfile;
-        public final ImageView mPostImage;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final TextView mTitle;
+        final TextView mDescription;
+        final TextView mUserName;
+        final TextView mUserDate;
+        final ImageView mUserImageProfile;
+        final ImageView mPostImage;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mTitle = (TextView) view.findViewById(R.id.item_mata_title);

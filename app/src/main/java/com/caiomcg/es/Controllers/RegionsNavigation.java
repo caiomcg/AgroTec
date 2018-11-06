@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,17 +25,22 @@ import com.caiomcg.es.C;
 import com.caiomcg.es.Models.Ad;
 import com.caiomcg.es.Models.User;
 
+import com.caiomcg.es.PostAdFragment;
 import com.caiomcg.es.R;
 import com.caiomcg.es.Utils.AdCreator;
 import com.caiomcg.es.Utils.Requests;
+import com.caiomcg.es.Utils.Share;
 import com.caiomcg.es.dummy.DummyContent;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegionsNavigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener,
         PostFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
-        MataFragment.OnListFragmentInteractionListener {
+        MataFragment.OnListFragmentInteractionListener, PostAdFragment.OnFragmentInteractionListener {
     public static String TAG = "RegionsNavigation";
 
     private User user;
@@ -45,15 +51,6 @@ public class RegionsNavigation extends AppCompatActivity
         setContentView(R.layout.activity_regions_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,6 +69,15 @@ public class RegionsNavigation extends AppCompatActivity
         //TODO: Handle null pointers
         this.user = (User)bundle.getSerializable("User");
         Log.e(TAG, this.user.toString());
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG, "Showing fragment");
+                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, PostAdFragment.newInstance(user)).commit();
+            }
+        });
     }
 
     @Override
@@ -89,7 +95,10 @@ public class RegionsNavigation extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.regions_navigation, menu);
 
-        //TODO: Add image replacement
+        if (!user.urlImage.isEmpty()  && !user.urlImage.equals("null")) {
+            Log.e(TAG, "Loading image: " + user.urlImage);
+            Picasso.with(RegionsNavigation.this).load(user.urlImage).into(((CircleImageView) findViewById(R.id.nav_user_image)));
+        }
         ((TextView)findViewById(R.id.nav_user_name)).setText(String.format("%s %s", this.user.firstName, this.user.lastName));
         ((TextView)findViewById(R.id.nav_user_email)).setText(this.user.email);
 
@@ -134,7 +143,8 @@ public class RegionsNavigation extends AppCompatActivity
                 this.requestByRegion(4);
                 break;
             case R.id.nav_share:
-                //fragment = PostFragment.newInstance("", "");
+                startActivity(Share.sendText("Conheça o AgroTec, a melhor ferramenta de compra e venda " +
+                        "no cenário agropecuário da Paraíba.\nhttp://localhost:8080"));
                 break;
             case R.id.nav_send:
                 break;

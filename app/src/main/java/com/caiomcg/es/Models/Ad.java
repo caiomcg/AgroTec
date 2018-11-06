@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class Ad implements Serializable {
     public int id;
+    public int regiao;
     public String urlImage;
     public String title;
     public String description;
@@ -23,6 +24,7 @@ public class Ad implements Serializable {
         object.put("title", title);
         object.put("description", description);
         object.put("registerDate", registerDate);
+        object.put("regiao", regiao);
 
         return object;
     }

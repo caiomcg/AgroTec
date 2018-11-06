@@ -30,8 +30,6 @@ public class MataFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
-    private ArrayList<String> mataArray = new ArrayList();
     private ArrayList<Ad> adsArray = new ArrayList<>();
 
     /**
