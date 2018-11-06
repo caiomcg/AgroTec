@@ -1,30 +1,21 @@
 package com.caiomcg.es.Controllers;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
-import com.caiomcg.es.UserFactory;
+import com.caiomcg.es.Utils.UserFactory;
 import com.caiomcg.es.Utils.Requests;
-import org.json.JSONArray;
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = "MainAct";
@@ -41,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         password = findViewById(R.id.password_edit_text);
 
         findViewById(R.id.connect_button).setOnClickListener(this);
+//        findViewById(R.id.connect_button).setOnLongClickListener(v -> {
+//            startActivity(Share.sendText("Testando 123"));
+//            return false;
+//        });
         findViewById(R.id.no_account_text_view).setOnClickListener(this);
     }
 
@@ -72,8 +67,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 },
                 error -> {
-                    Toast.makeText(MainActivity.this, "Não foi possível contactar o" +
-                            "servidor, por favor verifique as credenciais", Toast.LENGTH_LONG).show();
+                    if (error.networkResponse != null) {
+                        Log.e(TAG, "Status code: " + error.networkResponse.statusCode);
+                        Toast.makeText(MainActivity.this, "Não foi possível contactar o " +
+                                "servidor, por favor verifique as credenciais", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Por favor, verifique os dados inseridos", Toast.LENGTH_LONG).show();
+                    }
+
                     Log.e(TAG, error.toString());
                 });
                 break;

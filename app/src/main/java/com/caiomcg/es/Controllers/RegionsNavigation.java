@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,15 +16,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.caiomcg.es.HomeFragment;
-import com.caiomcg.es.MataFragment;
+import com.android.volley.Request;
+import com.android.volley.toolbox.Volley;
+import com.caiomcg.es.C;
+import com.caiomcg.es.Models.Ad;
 import com.caiomcg.es.Models.User;
 
-import com.caiomcg.es.OptionsFragment;
-import com.caiomcg.es.PostFragment;
 import com.caiomcg.es.R;
+import com.caiomcg.es.Utils.AdCreator;
+import com.caiomcg.es.Utils.Requests;
 import com.caiomcg.es.dummy.DummyContent;
+
+import java.util.ArrayList;
 
 public class RegionsNavigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener,
@@ -109,33 +115,57 @@ public class RegionsNavigation extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Fragment fragment = null;
+
         switch (item.getItemId()) {
             case R.id.nav_home:
-                HomeFragment homeFragment = HomeFragment.newInstance("", "");
-                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, homeFragment).commit();
+                fragment = HomeFragment.newInstance("", "");
                 break;
             case R.id.nav_mata:
-                MataFragment mataFragment = MataFragment.newInstance(0);
-                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, mataFragment).commit();
+                this.requestByRegion(1);
                 break;
             case R.id.nav_agreste:
+                this.requestByRegion(2);
                 break;
             case R.id.nav_borborema:
+                this.requestByRegion(3);
                 break;
             case R.id.nav_sertao:
+                this.requestByRegion(4);
                 break;
             case R.id.nav_share:
-                PostFragment postFragment = PostFragment.newInstance("", "");
-                getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, postFragment).commit();
+                //fragment = PostFragment.newInstance("", "");
                 break;
             case R.id.nav_send:
                 break;
 
         }
 
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, fragment).commit();
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void requestByRegion(int region) {
+        Requests.getInstance().asJsonArray(Request.Method.GET, C.adsByRegion(region).toString(), null,
+                response -> {
+                    MataFragment mataFragment = MataFragment.newInstance(0);
+
+                    Bundle bundle = new Bundle();
+
+                    ArrayList<Ad> ads = AdCreator.fetchAds(response);
+
+                    bundle.putSerializable("ads", ads);
+                    mataFragment.setArguments(bundle);
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.screen_area, mataFragment).commit();
+                }, error -> {
+                    Toast.makeText(RegionsNavigation.this, "Falha ao requisitar anuncios", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override

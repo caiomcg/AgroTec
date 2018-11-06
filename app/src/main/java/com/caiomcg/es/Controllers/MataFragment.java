@@ -1,4 +1,4 @@
-package com.caiomcg.es;
+package com.caiomcg.es.Controllers;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,15 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.caiomcg.es.dummy.DummyContent;
+import com.caiomcg.es.Models.Ad;
+import com.caiomcg.es.R;
 import com.caiomcg.es.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -31,6 +32,7 @@ public class MataFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     private ArrayList<String> mataArray = new ArrayList();
+    private ArrayList<Ad> adsArray = new ArrayList<>();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,11 +53,17 @@ public class MataFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        for (int i = 0; i < 10; i++) {
-            mataArray.add("Teste: " + i);
-        }
-
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+
+        if (bundle != null) {
+            adsArray = (ArrayList<Ad>)bundle.getSerializable("ads");
+
+            for (Ad ad : adsArray) {
+                Log.e("MataFragment", "AD: " + ad.toString());
+            }
+        }
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -76,7 +84,7 @@ public class MataFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(this.mataArray));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(this.adsArray));
         }
         return view;
     }

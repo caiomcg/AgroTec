@@ -10,16 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
-import com.caiomcg.es.UserFactory;
 import com.caiomcg.es.Utils.Requests;
-import com.caiomcg.es.Validator;
+import com.caiomcg.es.Utils.Validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;

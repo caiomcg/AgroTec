@@ -1,18 +1,36 @@
-package com.caiomcg.es;
+package com.caiomcg.es.Controllers;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.caiomcg.es.MataFragment.OnListFragmentInteractionListener;
+import com.android.volley.Request;
+import com.android.volley.toolbox.Volley;
+import com.caiomcg.es.C;
+import com.caiomcg.es.Controllers.MataFragment.OnListFragmentInteractionListener;
+import com.caiomcg.es.Models.Ad;
+import com.caiomcg.es.Models.User;
+import com.caiomcg.es.R;
+import com.caiomcg.es.Utils.Requests;
+import com.caiomcg.es.Utils.UserFactory;
 import com.caiomcg.es.dummy.DummyContent.DummyItem;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -21,9 +39,10 @@ import java.util.List;
  */
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
-    private final ArrayList<String> mValues;
+    private final ArrayList<Ad> mValues;
+    public static final String TAG = "RecyclerView";
 
-    public MyItemRecyclerViewAdapter(ArrayList<String> arrayList) {
+    public MyItemRecyclerViewAdapter(ArrayList<Ad> arrayList) {
         mValues = arrayList;
     }
 
@@ -36,12 +55,15 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mTitle.setText(mValues.get(position));
-        holder.mDescription.setText(mValues.get(position));
+        holder.mTitle.setText(mValues.get(position).title);
+        holder.mDescription.setText(mValues.get(position).description);
 
-        holder.mUserName.setText(mValues.get(position));
-        holder.mUserDate.setText(mValues.get(position));
-        //holder.mUserImageProfile.setImageURI(Uri.parse("https://avatars3.githubusercontent.com/u/11435231?s=400&u=55b9178d434edb72fc13a8b2f1bf46b47d48326e&v=4"));
+        holder.mUserDate.setText(mValues.get(position).registerDate);
+
+        Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).urlImage).into(holder.mPostImage);
+
+        holder.mUserName.setText(mValues.get(position).user.userName);
+        Picasso.with(AgroTecApplication.getContext()).load(mValues.get(position).user.urlImage).into(holder.mUserImageProfile);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +75,23 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 //                }
             }
         });
+    }
+
+    private Bitmap getImageBitmap(String url) {
+        Bitmap bm = null;
+        try {
+            URL aURL = new URL(url);
+            URLConnection conn = aURL.openConnection();
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Error getting bitmap", e);
+        }
+        return bm;
     }
 
     @Override
@@ -67,6 +106,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mUserName;
         public final TextView mUserDate;
         public final ImageView mUserImageProfile;
+        public final ImageView mPostImage;
 
         public ViewHolder(View view) {
             super(view);
@@ -76,6 +116,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             mUserName = (TextView) view.findViewById(R.id.item_mata_userName);
             mUserDate = (TextView) view.findViewById(R.id.item_mata_date);
             mUserImageProfile = (ImageView) view.findViewById(R.id.item_mata_userImageProfile);
+            mPostImage = (ImageView) view.findViewById(R.id.post_image);
         }
     }
 }
