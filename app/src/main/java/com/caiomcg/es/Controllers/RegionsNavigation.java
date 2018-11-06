@@ -34,8 +34,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegionsNavigation extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OptionsFragment.OnFragmentInteractionListener,
-        PostFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener,
+        implements NavigationView.OnNavigationItemSelectedListener, HomeFragment.OnFragmentInteractionListener,
         MataFragment.OnListFragmentInteractionListener, PostAdFragment.OnFragmentInteractionListener {
     public static String TAG = "RegionsNavigation";
 
@@ -142,9 +141,6 @@ public class RegionsNavigation extends AppCompatActivity
                 startActivity(Share.sendText("Conheça o AgroTec, a melhor ferramenta de compra e venda " +
                         "no cenário agropecuário da Paraíba.\nhttp://localhost:8080"));
                 break;
-            case R.id.nav_send:
-                break;
-
         }
 
         if (fragment != null) {

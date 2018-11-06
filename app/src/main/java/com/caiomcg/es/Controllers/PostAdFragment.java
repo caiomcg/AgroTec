@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.caiomcg.es.C;
@@ -103,6 +104,7 @@ public class PostAdFragment extends Fragment {
             ad.registerDate = "xx/xx/xxxx";//TODO: get date
             ad.title = title.getText().toString();
             ad.description = description.getText().toString();
+
             switch (group.getCheckedRadioButtonId()) {
                 case R.id.radioButton1:
                     ad.regiao = 1;
@@ -133,8 +135,10 @@ public class PostAdFragment extends Fragment {
             Requests.getInstance().asJsonObject(Request.Method.POST, C.adsURI().toString(),
                     jsonObject, response -> {
                         Log.e(TAG, "All good");
+                        Toast.makeText(AgroTecApplication.getContext(), "Post criado com sucesso", Toast.LENGTH_SHORT).show();
                     }, error -> {
                         Log.e(TAG, "An error occured: " + error.toString());
+                        Toast.makeText(AgroTecApplication.getContext(), "Falha ao enviar os dados ao servidor", Toast.LENGTH_SHORT).show();
                         error.printStackTrace();
                     });
 
