@@ -1,4 +1,4 @@
-package com.caiomcg.es;
+package com.caiomcg.es.Controllers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,17 +15,14 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.android.volley.Request;
-import com.caiomcg.es.Controllers.NoAccountActivity;
-import com.caiomcg.es.Controllers.RegionsNavigation;
+import com.caiomcg.es.C;
 import com.caiomcg.es.Models.Ad;
 import com.caiomcg.es.Models.User;
+import com.caiomcg.es.R;
 import com.caiomcg.es.Utils.Requests;
-import com.caiomcg.es.Utils.UserFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**

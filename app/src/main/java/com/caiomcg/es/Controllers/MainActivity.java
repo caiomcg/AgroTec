@@ -12,7 +12,7 @@ import com.android.volley.Request;
 import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
-import com.caiomcg.es.Utils.UserFactory;
+import com.caiomcg.es.Utils.UserCreator;
 import com.caiomcg.es.Utils.Requests;
 
 import org.json.JSONException;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         password.getText().toString()).toString(),null,
                 response -> {
                     try {
-                        user = UserFactory.createUser(response);
+                        user = UserCreator.createUser(response);
                         Log.d(TAG, "Logged " + user.firstName + " to the system");
 
                         Bundle bundle = new Bundle();

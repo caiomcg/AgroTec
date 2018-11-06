@@ -5,7 +5,7 @@ import com.caiomcg.es.Models.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserFactory {
+public class UserCreator {
     public static User createUser(JSONObject object) throws JSONException {
         User user = new User();
 

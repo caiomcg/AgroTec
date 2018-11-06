@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.caiomcg.es.R;
+import com.caiomcg.es.Utils.Share;
 
 
 /**
@@ -65,8 +67,20 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        view.findViewById(R.id.agricultura_share).setOnClickListener(v -> {
+            startActivity(Share.sendText(String.format("%s\n%s",
+                    "Agricultura", ((TextView)view.findViewById(R.id.description_agricultura)).getText().toString())));
+        });
+
+        view.findViewById(R.id.share_pecuaria).setOnClickListener(v -> {
+            startActivity(Share.sendText(String.format("%s\n%s",
+                    "Pecuaria", ((TextView)view.findViewById(R.id.description_pecuaria)).getText().toString())));
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

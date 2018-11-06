@@ -16,13 +16,11 @@ import com.caiomcg.es.C;
 import com.caiomcg.es.Models.User;
 import com.caiomcg.es.R;
 import com.caiomcg.es.Utils.Requests;
-import com.caiomcg.es.Utils.UserFactory;
+import com.caiomcg.es.Utils.UserCreator;
 import com.caiomcg.es.Utils.Validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.nio.Buffer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -105,7 +103,7 @@ public class NoAccountActivity extends AppCompatActivity implements View.OnClick
                             jsonObject, response -> {
                                 Log.e(TAG, "All good");
                                 try {
-                                    User loggedUser = UserFactory.createUser(response);
+                                    User loggedUser = UserCreator.createUser(response);
 
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("User", loggedUser);
